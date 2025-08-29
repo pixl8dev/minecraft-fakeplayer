@@ -472,7 +472,7 @@ public class FakeplayerManager {
             return;
         }
 
-        if (this.playerList.getSize() >= this.config.getServerLimit()) {
+        if (this.playerList.getSize() >= this.config.getServerLimit(Main.getInstance().getConfig())) {
             throw new CommandException(translatable("fakeplayer.command.spawn.error.server-limit"));
         }
 

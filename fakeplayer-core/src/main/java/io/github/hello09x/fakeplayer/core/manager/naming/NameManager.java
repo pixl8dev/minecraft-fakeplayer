@@ -143,7 +143,7 @@ public class NameManager {
             ).color(RED));
         }
 
-        if (!config.getNamePattern().asPredicate().test(name)) {
+if (!config.getNamePattern(Main.getInstance().getConfig()).asPredicate().test(name)) {
             throw new IllegalCustomNameException(translatable("fakeplayer.spawn.error.name.invalid", RED));
         }
 
@@ -183,7 +183,7 @@ public class NameManager {
      * @return 序列名
      */
     public @NotNull SequenceName getRegularName(@NotNull CommandSender creator) {
-        var source = config.getNameTemplate();
+        var source = String.format(config.getNameTemplate(Main.getInstance().getConfig()), creator.getName());
         if (source.isBlank()) {
             source = creator.getName();
         }

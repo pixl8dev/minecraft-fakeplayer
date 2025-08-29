@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class Release {
@@ -20,5 +19,12 @@ public class Release {
      * GitHub release content
      */
     private String body;
-
+    
+    public String getTagName() {
+        return tagName;
+    }
+    
+    public String getBody() {
+        return body;
+    }
 }

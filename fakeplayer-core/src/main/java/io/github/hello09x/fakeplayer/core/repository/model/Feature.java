@@ -22,8 +22,6 @@ import java.util.function.Function;
  * @author tanyaofei
  * @since 2024/8/13
  **/
-@Getter
-@AllArgsConstructor
 public enum Feature implements Translatable, Singletons {
 
     /**
@@ -135,36 +133,62 @@ public enum Feature implements Translatable, Singletons {
     ),
     ;
 
-    @NotNull
-    final String translationKey;
+    private final String translationKey;
+    private final List<String> permissions;
+    private final List<String> options;
+    private final String defaultOption;
+    private final Function<Player, String> detector;
+    private final BiConsumer<Player, String> modifier;
 
-    @NotNull
-    final List<String> permissions;
-
-    @NotNull
-    final List<String> options;
-
-    @NotNull
-    final String defaultOption;
-
-    @Nullable
-    final Function<Player, String> detector;
-
-    @Nullable
-    final BiConsumer<Player, String> modifier;
-
+    Feature(
+        String translationKey,
+        List<String> permissions,
+        List<String> options,
+        String defaultOption,
+        Function<Player, String> detector,
+        BiConsumer<Player, String> modifier
+    ) {
+        this.translationKey = translationKey;
+        this.permissions = permissions;
+        this.options = options;
+        this.defaultOption = defaultOption;
+        this.detector = detector;
+        this.modifier = modifier;
+    }
 
     @Override
     public @NotNull String translationKey() {
         return this.translationKey;
     }
 
+    public @NotNull List<String> getPermissions() {
+        return this.permissions;
+    }
+
+    public @NotNull List<String> getOptions() {
+        return this.options;
+    }
+
+    public @NotNull String getDefaultOption() {
+        return this.defaultOption;
+    }
+
+
+
     public boolean hasDetector() {
         return this.detector != null;
+    }
+    
+    public @Nullable Function<Player, String> getDetector() {
+        return this.detector;
     }
 
     public boolean hasModifier() {
         return this.modifier != null;
+    }
+    
+    public @Nullable BiConsumer<Player, String> getModifier() {
+        return this.modifier;
     }
 
     public boolean testPermissions(@NotNull CommandSender sender) {

@@ -68,8 +68,9 @@ public class SpawnCommand extends AbstractCommand {
             );
         }
 
-        var removedAt = Optional.ofNullable(config.getLifespan()).map(lifespan -> LocalDateTime.now().plus(lifespan)).orElse(null);
-        manager.spawnAsync(sender, name, spawnpoint, Optional.ofNullable(config.getLifespan()).map(Duration::toMillis).orElse(FakeplayerTicker.NON_REMOVE_AT))
+        var lifespan = config.getLifespan(Main.getInstance().getConfig());
+        var removedAt = Optional.ofNullable(lifespan).map(ls -> LocalDateTime.now().plus(ls)).orElse(null);
+        manager.spawnAsync(sender, name, spawnpoint, Optional.ofNullable(lifespan).map(Duration::toMillis).orElse(FakeplayerTicker.NON_REMOVE_AT))
                .thenAcceptAsync(player -> {
                    if (player == null) {
                        return;

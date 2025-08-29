@@ -4,7 +4,6 @@ import lombok.AllArgsConstructor;
 import net.kyori.adventure.translation.Translatable;
 import org.jetbrains.annotations.NotNull;
 
-@AllArgsConstructor
 public enum Direction implements Translatable {
 
     DOWN("fakeplayer.direction.down"),
@@ -19,7 +18,11 @@ public enum Direction implements Translatable {
 
     EAST("fakeplayer.direction.east");
 
-    final String translationKey;
+    private final String translationKey;
+
+    Direction(String translationKey) {
+        this.translationKey = translationKey;
+    }
 
     @Override
     public @NotNull String translationKey() {

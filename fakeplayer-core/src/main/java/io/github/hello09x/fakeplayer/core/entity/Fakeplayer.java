@@ -60,6 +60,36 @@ public class Fakeplayer {
     @NotNull
     @Getter
     private final Player player;
+    
+    @NotNull
+    public String getName() {
+        return this.name;
+    }
+    
+    @NotNull
+    public CommandSender getCreator() {
+        return this.creator;
+    }
+    
+    @NotNull
+    public NMSServerPlayer getHandle() {
+        return this.handle;
+    }
+    
+    @NotNull
+    public Player getPlayer() {
+        return this.player;
+    }
+    
+    @NotNull
+    public SequenceName getSequenceName() {
+        return this.sequenceName;
+    }
+    
+    @NotNull
+    public String getCreatorIp() {
+        return this.creatorIp;
+    }
 
     @NotNull
     @Getter
@@ -131,7 +161,7 @@ public class Fakeplayer {
                 .thenComposeAsync(nul -> SchedulerUtils.runTask(Main.getInstance(), () -> {
                     {
                         var event = this.callLoginEvent(address);
-                        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED && config.getPreventKicking().ordinal() < PreventKicking.ON_SPAWNING.ordinal()) {
+if (event.getResult() != PlayerLoginEvent.Result.ALLOWED && config.getPreventKicking(Main.getInstance().getConfig()).ordinal() < PreventKicking.ON_SPAWNING.ordinal()) {
                             throw new CommandException(translatable(
                                     "fakeplayer.command.spawn.error.disallowed", RED,
                                     text(player.getName(), WHITE),
@@ -252,7 +282,7 @@ public class Fakeplayer {
     }
 
     private void setupName() {
-        var displayName = text(player.getName(), config.getNameStyleColor(), config.getNameStyleDecorations().toArray(new TextDecoration[0]));
+        var displayName = text(player.getName(), config.getNameStyleColor(Main.getInstance().getConfig()), config.getNameStyleDecorations(Main.getInstance().getConfig()).toArray(new TextDecoration[0]));
         player.playerListName(displayName);
         player.displayName(displayName);
         player.customName(displayName);

@@ -8,7 +8,6 @@ import org.jetbrains.annotations.NotNull;
  * @author tanyaofei
  * @since 2024/8/9
  **/
-@AllArgsConstructor
 public
 enum ActionType implements Translatable {
 
@@ -52,8 +51,11 @@ enum ActionType implements Translatable {
      */
     DROP_INVENTORY("fakeplayer.action.drop-inventory");
 
-    final String translationKey;
+    private final String translationKey;
 
+    ActionType(String translationKey) {
+        this.translationKey = translationKey;
+    }
 
     @Override
     public @NotNull String translationKey() {

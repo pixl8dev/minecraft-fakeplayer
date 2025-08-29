@@ -1,12 +1,13 @@
 package io.github.hello09x.fakeplayer.core.config;
 
-
 import com.google.common.annotations.Beta;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import io.github.hello09x.devtools.core.config.ConfigUtils;
 import io.github.hello09x.devtools.core.config.PluginConfig;
 import io.github.hello09x.fakeplayer.core.Main;
+import io.github.hello09x.fakeplayer.core.config.PreventKicking;
+import io.github.hello09x.fakeplayer.core.manager.naming.SequenceName;
 import io.github.hello09x.fakeplayer.core.repository.model.Feature;
 import lombok.Getter;
 import lombok.ToString;
@@ -31,6 +32,119 @@ import static net.kyori.adventure.text.Component.translatable;
 @ToString
 @Singleton
 public class FakeplayerConfig extends PluginConfig {
+
+    public String getNamePrefix() {
+        return this.namePrefix;
+    }
+
+    public int getPlayerLimit() {
+        return this.playerLimit;
+    }
+
+    public int getServerLimit(FileConfiguration config) {
+        return this.serverLimit;
+    }
+
+    public boolean isKickOnDead() {
+        return this.kickOnDead;
+    }
+
+    public boolean isCheckForUpdates() {
+        return this.checkForUpdates;
+    }
+
+    public boolean isDebug() {
+        return this.debug;
+    }
+
+    public Set<String> getAllowCommands() {
+        return this.allowCommands;
+    }
+
+    public Map<Feature, String> getDefaultFeatures() {
+        return this.defaultFeatures;
+    }
+
+    public @Nullable Duration getLifespan(FileConfiguration config) {
+        return this.lifespan;
+    }
+
+    public boolean isPersistData() {
+        return this.persistData;
+    }
+
+    public boolean isDropInventoryOnQuiting() {
+        return this.dropInventoryOnQuiting;
+    }
+
+    public boolean isFollowQuiting() {
+        return this.followQuiting;
+    }
+
+    public List<String> getPostSpawnCommands() {
+        return this.postSpawnCommands;
+    }
+
+    public List<String> getAfterSpawnCommands() {
+        return this.afterSpawnCommands;
+    }
+
+    public List<String> getAfterQuitCommands() {
+        return this.afterQuitCommands;
+    }
+
+    public InvseeImplement getInvseeImplement() {
+        return this.invseeImplement;
+    }
+
+    public int getKaleTps() {
+        return this.kaleTps;
+    }
+
+    public boolean isDetectIp() {
+        return this.detectIp;
+    }
+
+    public NamedTextColor getNameStyleColor(FileConfiguration config) {
+        return this.nameStyleColor;
+    }
+
+    public List<TextDecoration> getNameStyleDecorations(FileConfiguration config) {
+        return this.nameStyleDecorations;
+    }
+
+    public Pattern getNamePattern(FileConfiguration config) {
+        return this.namePattern;
+    }
+
+    public String getNameTemplate(FileConfiguration config) {
+        return this.nameTemplate;
+    }
+
+    public List<String> getPreSpawnCommands() {
+        return this.preSpawnCommands;
+    }
+
+    public List<String> getPostQuitCommands() {
+        return this.postQuitCommands;
+    }
+
+    public List<String> getSelfCommands() {
+        return this.selfCommands;
+    }
+
+    public PreventKicking getPreventKicking(FileConfiguration config) {
+        return this.preventKicking;
+    }
+
+    public SequenceName getSequenceName() {
+        // Return a new default SequenceName with empty values
+        return new SequenceName("default", 0, new UUID(0, 0), "");
+    }
+
+    public boolean isDefaultOnlineSkin() {
+        return this.defaultOnlineSkin;
+    }
 
     private final static Logger log = Main.getInstance().getLogger();
 
@@ -243,64 +357,11 @@ public class FakeplayerConfig extends PluginConfig {
 
     }
 
-    private @Nullable Duration getLifespan(@NotNull FileConfiguration file) {
-        var minutes = file.getLong("lifespan");
-        if (minutes <= 0) {
-            return null;
-        }
-        return Duration.ofMinutes(minutes);
-    }
 
 
-    private @NotNull Pattern getNamePattern(@NotNull FileConfiguration file) {
-        try {
-            return Pattern.compile(file.getString("name-pattern", defaultNameChars));
-        } catch (PatternSyntaxException e) {
-            log.warning("Invalid name-pattern: " + file.getString("name-chars"));
-            return Pattern.compile(defaultNameChars);
-        }
-    }
 
-    private @NotNull String getNameTemplate(@NotNull FileConfiguration file) {
-        var tmpl = file.getString("name-template", "");
-        if (tmpl.startsWith("-") || tmpl.startsWith("@")) {
-            log.warning("Invalid name template: " + this.nameTemplate);
-            return "";
-        }
-        return tmpl;
-    }
 
-    private @NotNull PreventKicking getPreventKicking(@NotNull FileConfiguration file) {
-        if (file.getBoolean("prevent-kicked-on-spawning", false)) {
-            log.warning("prevent-kicked-on-spawning is deprecated which will be removed at 0.4.0, use prevent-kick instead");
-            return PreventKicking.ON_SPAWNING;
-        }
 
-        return ConfigUtils.getEnum(file, "prevent-kicking", PreventKicking.class, PreventKicking.ON_SPAWNING);
-    }
 
-    private @NotNull NamedTextColor getNameStyleColor(@NotNull FileConfiguration file) {
-        var styles = Objects.requireNonNullElse(file.getString("name-style"), "").split(",\\s*");
-        var color = NamedTextColor.WHITE;
-        for (var style : styles) {
-            var c = NamedTextColor.NAMES.value(style);
-            if (c != null) {
-                color = c;
-            }
-        }
-        return color;
-    }
-
-    private @NotNull List<TextDecoration> getNameStyleDecorations(@NotNull FileConfiguration file) {
-        var styles = Objects.requireNonNullElse(file.getString("name-style"), "").split(",\\s*");
-        var decorations = new ArrayList<TextDecoration>();
-        for (var style : styles) {
-            var decoration = TextDecoration.NAMES.value(style);
-            if (decoration != null) {
-                decorations.add(decoration);
-            }
-        }
-        return decorations;
-    }
 
 }

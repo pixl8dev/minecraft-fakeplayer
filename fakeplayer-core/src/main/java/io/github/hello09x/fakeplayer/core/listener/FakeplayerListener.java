@@ -88,7 +88,7 @@ public class FakeplayerListener implements Listener {
             return;
         }
 
-        switch (config.getPreventKicking()) {
+        switch (config.getPreventKicking(Main.getInstance().getConfig())) {
             case ON_SPAWNING -> {
                 var spawnAt = MetadataUtils
                         .find(Main.getInstance(), player, MetadataKeys.SPAWNED_AT, Integer.class)

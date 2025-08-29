@@ -25,19 +25,23 @@ public class InternalAddressGenerator {
      *
      * @return IP 地址
      */
-    @SneakyThrows
     public @NotNull InetAddress next() {
-        var ip = next.getAndIncrement();
-        // max 127.255.255.254
-        if (ip == 0xfffffe) {
-            next.set(0);
+        try {
+            var ip = next.getAndIncrement();
+            // max 127.255.255.254
+            if (ip == 0xfffffe) {
+                next.set(0);
+            }
+
+            var p2 = (ip >> 16) & 0xff;
+            var p3 = (ip >> 8) & 0xff;
+            var p4 = ip & 0xff;
+
+            return InetAddress.getByAddress(new byte[]{127, (byte) p2, (byte) p3, (byte) p4});
+        } catch (java.net.UnknownHostException e) {
+            // This should never happen since we're constructing a valid IP address
+            throw new AssertionError("Failed to create InetAddress for 127.x.x.x", e);
         }
-
-        var p2 = (ip >> 16) & 0xff;
-        var p3 = (ip >> 8) & 0xff;
-        var p4 = ip & 0xff;
-
-        return InetAddress.getByAddress(new byte[]{127, (byte) p2, (byte) p3, (byte) p4});
     }
 
 }

@@ -130,3 +130,6 @@ server/
 buildtool/
 
 .flattened-pom.xml
+/buildtools
+/apache-maven-3.9.6
+/work

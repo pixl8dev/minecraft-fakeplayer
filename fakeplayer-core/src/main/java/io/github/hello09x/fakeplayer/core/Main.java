@@ -29,6 +29,18 @@ public final class Main extends JavaPlugin {
 
     @Getter
     private static Main instance;
+    
+    /**
+     * Returns the singleton instance of the Main class
+     * @return the singleton instance
+     * @throws IllegalStateException if the plugin has not been initialized yet
+     */
+    public static Main getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("Plugin has not been initialized yet!");
+        }
+        return instance;
+    }
 
     private Injector injector;
 
